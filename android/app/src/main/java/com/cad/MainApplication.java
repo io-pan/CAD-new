@@ -3,6 +3,7 @@ package com.cad;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.gijoehosaphat.keepscreenon.KeepScreenOnPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.github.yamill.orientation.OrientationPackage;
 import com.airbnb.android.react.maps.MapsPackage;
@@ -27,6 +28,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new KeepScreenOnPackage(this),
             new VectorIconsPackage(),
             new OrientationPackage(),
             new MapsPackage(),
