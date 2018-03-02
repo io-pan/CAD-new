@@ -15,10 +15,12 @@ import {
 
 } from 'react-native';
 
+                               
+import SCX from './components/scX';
 import SC1 from './components/sc1';
-// import MAP from './components/map';
-// import MOT from './components/motion';
-// import GEO from './components/location';
+import MAP from './components/map';
+import MOT from './components/motion';
+import GEO from './components/location';
 import IMG from './components/img';
 
 import Orientation from 'react-native-orientation';
@@ -46,7 +48,7 @@ export default class CAD extends Component {
       locOn: false,
       view: 'panorama',  //orbit , panorama
       viewGMap: false,
-      viewMap: true,
+      viewMap: false,
 
       
       loc: false,
@@ -210,14 +212,60 @@ export default class CAD extends Component {
   }
 
   _renderLocation = () => {
-  	return null;
+    if (this.state.loc===false){
+      return(
+        <GEO 
+          curLoc = { false }
+          getLocCallback = { this.gotNewLoc }
+        />
+      );
+    }
+    else if (this.state.locOn && this.state.menuOpen) {
+      return(
+          <View 
+            style = { styles.subPage } 
+            //style = { this.menuStyle() } 
+            >
+           
+              <GEO 
+                curLoc= { this.state.loc }
+                getLocCallback = { this.gotNewLoc }
+              />
+ 
+          
+          </View>
+      );
+    }
   }
 
   _renderCanvas(){
-  	return null;
+    if (this.state.loc!==false) {
+      return (
+        <MOT 
+          // sensorsOn = { this.state.sensorsOn }
+          // sensorsToggleCallback = { this.onToggleSensors }
+          // oriCallback = { this.onOriChange }
+          pressPlaceCallback = { this.onPressLoc }
+          // vFOV = { this.state.vFOV }
+          // view = { this.state.view }
+          // viewBg = { this.state.viewBg }
+          loc = { this.state.loc }
+          style = {{
+            position: 'absolute',
+            left:     0,
+            top:      0,
+            width: this.state.pageWidth,
+            height: this.state.pageHeight,
+            backgroundColor:'rgba(255,255,0,0.5)',
+          }}
+        />
+      );
+    }
+    else {
+      return (null);
+    }
   }
 
- 
   _renderImg(){
     if (this.state.viewMap){
       return (
@@ -230,10 +278,7 @@ export default class CAD extends Component {
       return (null);
     }
   }
-
   _renderMap(){
-  	return (null);
-		/*
     if (this.state.viewGMap){
       return (
         <MAP
@@ -248,7 +293,6 @@ export default class CAD extends Component {
     else {
       return (null);
     }
-    */
   }
 
   render() {
@@ -258,7 +302,7 @@ export default class CAD extends Component {
         style = { styles.opaque } 
         >
 
-        { this._renderCanvas() }
+        { this._renderCanvas()}
         { this._renderLocation() }
         { this._renderMap() }
         { this._renderImg() }
@@ -272,8 +316,9 @@ export default class CAD extends Component {
             height: this.state.pageHeight,
           }} 
           >
-        
-
+          <Icon.Button name="bars" backgroundColor="#3b5998"
+            onPress = { this.onMenuPress }
+          ></Icon.Button>
         </View>
 
       </View>

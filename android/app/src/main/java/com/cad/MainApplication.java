@@ -28,7 +28,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new KeepScreenOnPackage(this),
+            new KeepScreenOnPackage(),
             new VectorIconsPackage(),
             new OrientationPackage(),
             new MapsPackage(),

@@ -29,6 +29,18 @@ export default class images extends Component {
     this.state = {
       menuPosition:new Animated.Value(0),
       coords:{},
+      layers:[
+        { name:'Commune',   imgsrc:require('./img/limites_commune.png')},
+        { name:'Chemins',   imgsrc:require('./img/chemins.png')},
+        { name:'Cadastre',  imgsrc:require('./img/cadastre.png')},
+        { name:'2017',      imgsrc:require('./img/a_2017.jpg')},
+        { name:'2015',      imgsrc:require('./img/a_2015.jpg')},
+        { name:'2010',      imgsrc:require('./img/a_2010.jpg')},
+        { name:'2005',      imgsrc:require('./img/a_2005.jpg')},
+        { name:'1965',      imgsrc:require('./img/a_1965.jpg')},
+        { name:'IGN',       imgsrc:require('./img/IGN.jpg')},
+        { name:'IGN scan',  imgsrc:require('./img/IGN_scan.jpg')},
+      ],
       layersPosition:[
         deviceHeight,
         deviceHeight,
@@ -108,60 +120,17 @@ export default class images extends Component {
           imageHeight={Dimensions.get('window').width / 1.24}
           >
 
-          <Image
-            ref="1"
-            style={[styles.img, {opacity:this.state.layersOpacity[1], top:this.state.layersPosition[1]}]}
-            source={require('./img/a_1965.jpg')}
-          />
-          <Image
-            ref="2"
-            style={[styles.img, {opacity:this.state.layersOpacity[2], top:this.state.layersPosition[2]}]}
-            source={require('./img/a_2005.jpg')}
-          />
-          <Image
-            ref="3"
-            style={[styles.img, {opacity:this.state.layersOpacity[3], top:this.state.layersPosition[3]}]}
-            source={require('./img/a_2010.jpg')}
-          />
-          <Image
-          ref="4"
-            style={[styles.img, {opacity:this.state.layersOpacity[4], top:this.state.layersPosition[4]}]}
-            source={require('./img/a_2015.jpg')}
-          />
-          <Image
-          ref="5"
-            style={[styles.img, {opacity:this.state.layersOpacity[5], top:this.state.layersPosition[5]}]}
-            source={require('./img/a_2017.jpg')}
-          />
+            { this.state.layers.map((value, index) => {
+              return(
+                <Image
+                  key={index}
+                  ref={index}
+                  style={[styles.img, {opacity:this.state.layersOpacity[index], top:this.state.layersPosition[index]}]}
+                  source={value.imgsrc}
+                />
+              );
+            })}
 
-          <Image
-          ref="6"
-            style={[styles.img, {opacity:this.state.layersOpacity[6], top:this.state.layersPosition[6]}]}
-            source={require('./img/IGN.jpg')}
-          />
-          <Image
-          ref="7"
-            style={[styles.img, {opacity:this.state.layersOpacity[7], top:this.state.layersPosition[7]}]}
-            source={require('./img/IGN_scan.jpg')}
-          />
-
-          <Image
-          ref="8"
-            style={[styles.img, {opacity:this.state.layersOpacity[8], top:this.state.layersPosition[8]}]}
-            source={require('./img/limites_commune.png')}
-          />
-
-          <Image
-          ref="9"
-            style={[styles.img, {top:this.state.layersPosition[9]}]}
-            source={require('./img/chemins.png')}
-          />
-
-          <Image
-          ref="10"
-            style={[styles.img, {top:this.state.layersPosition[10]}]}
-            source={require('./img/cadastre.png')}
-          />
 
         </ImageZoom>
 
@@ -172,88 +141,38 @@ export default class images extends Component {
           ]}
           > 
 
-            <View 
-              style={styles.layer}
-              >
-                <Icon.Button
-                  name="minus-circle"
-                  backgroundColor='transparent'
-                  onPress={() => this.opacityLayer(8,'')}
-                />
+            { this.state.layers.map((value, index) => {
+              return(
 
-                <TouchableHighlight 
-                  style={[styles.layer, {backgroundColor:this.state.layersPosition[8] ? bgLightColor:bgDarkColor}]}
-                  onPress = {()=> this.toggleLayer(8)}
+                <View 
+                  key={index}
+                  style={styles.layer}
                   >
-                  <Text style={[styles.layerText, {color:this.state.layersPosition[8] ? darkColor:lightColor}]}>
-                  Limites commune...
-                  </Text>
-                </TouchableHighlight>
+                    <Icon.Button
+                      name="minus-circle"
+                      backgroundColor='transparent'
+                      onPress={() => this.opacityLayer(index,'')}
+                    />
 
-                <Icon.Button
-                  name="plus-circle"
-                  backgroundColor='transparent'
-                  onPress={() => this.opacityLayer(8,'plus')}
-                />
-            </View>
+                    <TouchableHighlight 
+                      style={[ {justifyContent:'center', alignItems:'center', flex:1, backgroundColor:this.state.layersPosition[index] ? bgLightColor:bgDarkColor}]}
+                      onPress = {()=> this.toggleLayer(index)}
+                      >
+                      <Text style={[styles.layerText, {color:this.state.layersPosition[index] ? darkColor:lightColor}]}>
+                      {value.name}
+                      </Text>
+                    </TouchableHighlight>
+
+                    <Icon.Button
+                      name="plus-circle"
+                      backgroundColor='transparent'
+                      onPress={() => this.opacityLayer(index,'plus')}
+                    />
+                </View>
+              );
+            })}
 
 
-            <TouchableHighlight 
-              style={[styles.layer, {backgroundColor:this.state.layersPosition[9] ? bgLightColor:bgDarkColor}]}
-              onPress = {()=> this.toggleLayer(9)}
-              >
-              <Text style={[styles.layerText, {color:this.state.layersPosition[9] ? darkColor:lightColor}]}>Chemins</Text>
-            </TouchableHighlight>
-            <TouchableHighlight 
-              style={[styles.layer, {backgroundColor:this.state.layersPosition[10] ? bgLightColor:bgDarkColor}]}
-              onPress = {()=> this.toggleLayer(10)}
-              >
-              <Text style={[styles.layerText, {color:this.state.layersPosition[10] ? darkColor:lightColor}]}>Cadastre</Text>
-            </TouchableHighlight>
-
-            <TouchableHighlight 
-              style={[styles.layer, {backgroundColor:this.state.layersPosition[5] ? bgLightColor:bgDarkColor}]}
-              onPress = {()=> this.toggleLayer(5)}
-              >
-              <Text style={[styles.layerText, {color:this.state.layersPosition[5] ? darkColor:lightColor}]}>2017</Text>
-            </TouchableHighlight>
-            <TouchableHighlight 
-              style={[styles.layer, {backgroundColor:this.state.layersPosition[4] ? bgLightColor:bgDarkColor}]}
-              onPress = {()=> this.toggleLayer(4)}
-              >
-              <Text style={[styles.layerText, {color:this.state.layersPosition[4] ? darkColor:lightColor}]}>2015</Text>
-            </TouchableHighlight>
-            <TouchableHighlight 
-              style={[styles.layer, {backgroundColor:this.state.layersPosition[3] ? bgLightColor:bgDarkColor}]}
-              onPress = {()=> this.toggleLayer(3)}
-              >
-              <Text style={[styles.layerText, {color:this.state.layersPosition[3] ? darkColor:lightColor}]}>2010</Text>
-            </TouchableHighlight>
-             <TouchableHighlight 
-              style={[styles.layer, {backgroundColor:this.state.layersPosition[2] ? bgLightColor:bgDarkColor}]}
-              onPress = {()=> this.toggleLayer(2)}
-              >
-              <Text style={[styles.layerText, {color:this.state.layersPosition[2] ? darkColor:lightColor}]}>2005</Text>
-            </TouchableHighlight>
-            <TouchableHighlight 
-              style={[styles.layer, {backgroundColor:this.state.layersPosition[1] ? bgLightColor:bgDarkColor}]}
-              onPress = {()=> this.toggleLayer(1)}
-              >
-              <Text style={[styles.layerText, {color:this.state.layersPosition[1] ? darkColor:lightColor}]}>1965</Text>
-            </TouchableHighlight>
-
-            <TouchableHighlight 
-              style={[styles.layer, {backgroundColor:this.state.layersPosition[6] ? bgLightColor:bgDarkColor}]}
-              onPress = {()=> this.toggleLayer(6)}
-              >
-              <Text style={[styles.layerText, {color:this.state.layersPosition[6] ? darkColor:lightColor}]}>IGN</Text>
-            </TouchableHighlight>
-            <TouchableHighlight 
-              style={[styles.layer, {backgroundColor:this.state.layersPosition[7] ? bgLightColor:bgDarkColor}]}
-              onPress = {()=> this.toggleLayer(7)}
-              >
-              <Text style={[styles.layerText, {color:this.state.layersPosition[7] ? darkColor:lightColor}]}>IGN scan</Text>
-            </TouchableHighlight>
 
         </Animated.View>
 
